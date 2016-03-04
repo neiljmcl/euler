@@ -15,9 +15,10 @@ public class Factorator {
     public static void main(String[] args) {
         System.out.printf(
                 "Factors are: %s%n",
-                factorize(13195L)
+                factorize(600851475143L)
                         .stream().map((i) -> String.valueOf(i))
                         .collect(Collectors.joining(", ")));
+
 
     }
 
@@ -27,19 +28,20 @@ public class Factorator {
     }
 
     public static List<Long> factorize(long toBeFactorized) {
-        ArrayList<Long> factors = new ArrayList<>();
-        factorize(2l, toBeFactorized, factors);
-        return factors;
+        return factorize(2l, toBeFactorized);
     }
 
-    private static void factorize(long startingPoint, long residual, ArrayList<Long> factors) {
+    private static List<Long> factorize(long startingPoint, long residual) {
         OptionalLong optionalFactor = possibleFactors(startingPoint, residual)
                 .filter((i) -> residual % i == 0)
                 .findFirst();
         if (optionalFactor.isPresent()) {
             long factor = optionalFactor.getAsLong();
+            List<Long> factors = factorize(factor, residual / factor);
             factors.add(factor);
-            factorize(factor, residual/factor, factors);
+            return factors;
+        } else {
+            return new ArrayList<Long>();
         }
     }
 }
