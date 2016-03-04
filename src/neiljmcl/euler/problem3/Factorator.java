@@ -19,7 +19,6 @@ public class Factorator {
                         .stream().map((i) -> String.valueOf(i))
                         .collect(Collectors.joining(", ")));
 
-
     }
 
     public static LongStream possibleFactors(long min, long residual) {
