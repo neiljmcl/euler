@@ -18,15 +18,11 @@ public class SmallestMultiple {
     }
 
     private static IntPredicate divisibleByAll() {
-        return IntStream.rangeClosed(2,20)
+        return IntStream.rangeClosed(2,10)
                 .boxed()
                 .map(i -> divisibleBy(i))
-                .reduce(new IntPredicate() {
-                    @Override
-                    public boolean test(int value) {
-                        return true;
-                    }
-                }, (a,b) -> a.and(b));
+                .reduce((a,b) -> a.and(b))
+                .get();
     }
 
     private static IntPredicate divisibleBy(final int potentialDivisor) {
