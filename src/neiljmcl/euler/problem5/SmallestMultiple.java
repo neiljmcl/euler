@@ -11,46 +11,30 @@ import java.util.stream.Stream;
 public class SmallestMultiple {
     public static void main(String[] args) {
         int n = IntStream.iterate(1, i -> i + 1)
-                .filter(i -> i % 2 == 0 && i % 3 == 0 && i % 4 == 0 && i % 5 == 0
-                        && i % 6 == 0 && i % 7 == 0 && i % 8 == 0 && i % 9 == 0 && i % 10 == 0 )
+                .filter(divisibleByAll())
                 .findFirst()
                 .getAsInt();
         System.out.printf("Found %d%n", n);
-
-        // How to build an IntPredicate by and-ing together a set of IntPredicates
     }
 
-    private class DivisibleBy implements IntPredicate {
-        private final int potentialDivisor;
-
-        public DivisibleBy(int potentialDivisor) {
-            this.potentialDivisor = potentialDivisor;
-        }
-
-        @Override
-        public boolean test(int value) {
-            return value % potentialDivisor == 0;
-        }
+    private static IntPredicate divisibleByAll() {
+        return IntStream.rangeClosed(2,20)
+                .boxed()
+                .map(i -> divisibleBy(i))
+                .reduce(new IntPredicate() {
+                    @Override
+                    public boolean test(int value) {
+                        return true;
+                    }
+                }, (a,b) -> a.and(b));
     }
 
-//    private class DivisibleByUpTo implements IntPredicate {
-//        private final int max;
-//        public DivisibleByUpTo(int max) {
-//            this.max = max;
-//            Stream<DivisibleBy> stream = IntStream.rangeClosed(2, max).boxed()
-//                    .map(i -> new DivisibleBy(i));
-//            stream.reduce(DivisibleBy::and);
-//            // .reduce((a,b) -> a.and(b));
-//        }
-//
-//        @Override
-//        public boolean test(int value) {
-//            return false;
-//        }
-//
-//
-//    }
-//    private IntPredicate compose(IntPredicate... predicates) {
-//
-//    }
+    private static IntPredicate divisibleBy(final int potentialDivisor) {
+        return new IntPredicate() {
+            @Override
+            public boolean test(int value) {
+                return value % potentialDivisor == 0;
+            }
+        };
+    }
 }
