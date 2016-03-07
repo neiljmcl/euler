@@ -15,13 +15,13 @@ import java.util.stream.LongStream;
  */
 public class NthPrime {
     public static void main(String[] args) {
-        List<Long> primes = new ArrayList<>();
+        final List<Long> primes = new ArrayList<>();
         primes.add(2L);
         LongPredicate predicate = isFactoredBy(2L);
 
         while (primes.size() <= 10000) {
             final long lastPrime = primes.get(primes.size() - 1);
-            long prime = LongStream.rangeClosed(lastPrime +1, Long.MAX_VALUE)
+            final long prime = LongStream.rangeClosed(lastPrime +1, Long.MAX_VALUE)
                     .filter(predicate.negate())
                     .findFirst()
                     .getAsLong();
