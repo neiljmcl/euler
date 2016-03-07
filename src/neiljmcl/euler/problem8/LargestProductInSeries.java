@@ -83,7 +83,6 @@ public class LargestProductInSeries {
                     .map(BigInteger::valueOf)
                     .reduce((a,b) -> a.multiply(b))
                     .get();
-
         }
 
         @Override
